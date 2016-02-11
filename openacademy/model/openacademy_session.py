@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta
-from openerp import models, fields, api, exceptions
+from openerp import models, fields, api, exceptions, _
 
 class Session(models.Model):
     _name = 'openacademy.session'
@@ -46,16 +46,16 @@ class Session(models.Model):
         if self.seats < 0:
             return {
                 'warning': {
-                    'title': "Incorrect 'seats' value",
+                    'title': _("Incorrect 'seats' value"),
                     'message': 
-                    "The number of available seats may not be negative",
+                    _("The number of available seats may not be negative"),
                 },
             }
         if self.seats < len(self.attendee_ids):
             return {
                 'warning': {
-                    'title': "Too many attendees",
-                    'message': "Increase seats or remove excess attendees",
+                    'title': _("Too many attendees"),
+                    'message': _("Increase seats or remove excess attendees"),
                 },
             }
 
@@ -64,7 +64,7 @@ class Session(models.Model):
         for r in self:
             if r.instructor_id and r.instructor_id in r.attendee_ids:
                 raise exceptions.ValidationError(
-                    "A session's instructor can't be an attendee")
+                    _("A session's instructor can't be an attendee"))
 
     @api.depends('start_date', 'duration')
     def _get_end_date(self):
