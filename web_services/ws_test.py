@@ -24,3 +24,9 @@ session_id = call('openacademy.session', 'create', {
     'name' : 'Mi Sesion Web Service',
     'course_id' : 2,
 })
+# 4.create a new session for the "Functional" course
+course_id = call('openacademy.course', 'search', [('name','ilike','Course 0')])[0]
+session_id = call('openacademy.session', 'create', {
+    'name' : 'My session',
+    'course_id' : course_id,
+})
