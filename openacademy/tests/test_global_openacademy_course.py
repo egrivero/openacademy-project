@@ -4,6 +4,7 @@ from psycopg2 import IntegrityError
 from openerp.tests.common import TransactionCase
 from openerp.tools import mute_logger
 
+
 class GlobalTestOpenAcademyCourse(TransactionCase):
     '''
     Global test to openacademy course model.
@@ -15,11 +16,11 @@ class GlobalTestOpenAcademyCourse(TransactionCase):
         super(GlobalTestOpenAcademyCourse, self).setUp()
         self.variable = 'hello world'
         self.course = self.env['openacademy.course']
- 
+
     # Method of class that don't is test.
-    def create_course(self, course_name, course_description,
-                    course_responsible_id):
-        #create a course with parameters received
+    def create_course(
+            self, course_name, course_description, course_responsible_id):
+        # Create a course with parameters received
         course_id = self.course.create({
             'name': course_name,
             'description': course_description,
@@ -28,7 +29,6 @@ class GlobalTestOpenAcademyCourse(TransactionCase):
         return course_id
 
     # Method of test startswitch 'def test_*(self):'
-    
     # Mute then error openerp.sql_db to avoid it log
     @mute_logger('openerp.sql_db')
     def test_01_same_name_description(self):
@@ -41,7 +41,7 @@ class GlobalTestOpenAcademyCourse(TransactionCase):
             IntegrityError,
             'new row for relation "openacademy_course" violates check'
             ' constraint "openacademy_course_name_description_check"'
-            ):
+        ):
             # Create a course with same name and description to raise error.
             self.create_course('test', 'test', None)
 
@@ -53,15 +53,13 @@ class GlobalTestOpenAcademyCourse(TransactionCase):
         To raise constraint of unique name
         '''
         new_id = self.create_course('test1', 'test_description', None)
-        print "new_id", new_id
         # Error raised expected with message expected.
         with self.assertRaisesRegexp(
             IntegrityError,
             'duplicate key value violates unique constraint '
             '"openacademy_course_name_unique"'
-            ):
+        ):
             new_id2 = self.create_course('test1', 'test_description', None)
-            print "new_id2", new_id2
 
     def test_03_duplicate_course(self):
         '''
@@ -69,4 +67,3 @@ class GlobalTestOpenAcademyCourse(TransactionCase):
         '''
         course = self.env.ref('openacademy.course0')
         course_id = course.copy()
-        print "course_id", course_id

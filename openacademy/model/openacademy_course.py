@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api, _
-'''
-This module create model of Course
-'''
 
 
 class Course(models.Model):
@@ -13,10 +10,10 @@ class Course(models.Model):
 
     name = fields.Char(string='Title', required=True)
     description = fields.Text(string='Description')
-    responsible_id = fields.Many2one('res.users', 
-        ondelete='set null', string='Responsible', index=True)
-    session_ids = fields.One2many('openacademy.session',
-        'course_id', string='Session')
+    responsible_id = fields.Many2one(
+        'res.users', ondelete='set null', string='Responsible', index=True)
+    session_ids = fields.One2many(
+        'openacademy.session', 'course_id', string='Session')
 
     _sql_constraints = [
         ('name_description_check',
@@ -42,4 +39,3 @@ class Course(models.Model):
 
         default['name'] = new_name
         return super(Course, self).copy(default)
-
